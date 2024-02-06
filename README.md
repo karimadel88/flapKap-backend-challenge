@@ -1,46 +1,116 @@
-# Getting Started with Create React App
+# Vending Machine API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project implements a vending machine API using Node.js, Express, Sequelize, and TypeScript.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Directory Structure](#directory-structure)
+  - [config](#config)
+  - [general](#general)
+  - [middlewares](#middlewares)
+  - [products](#products)
+  - [users](#users)
+- [API Endpoints](#api-endpoints)
 
-### `npm start`
+## Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This API simulates a vending machine, allowing users with different roles to interact with it. Users with the "seller" role can manage products (add, update, remove), while users with the "buyer" role can deposit coins, buy products, and reset their deposit.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+Follow these instructions to set up and run the project on your local machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- Node.js installed
+- npm (Node Package Manager) installed
+- PostgreSQL installed (for Sequelize)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone the repository:**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   git clone https://github.com/karimadel88/flapKap-backend-challenge.git
+   ```
 
-### `npm run eject`
+2. **Change into the project directory:**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   ```bash
+   cd flapKap-backend-challenge
+   ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Install dependencies:**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+   ```bash
+   yarn install
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+4. **Configure the database:**
 
-## Learn More
+   - Create a PostgreSQL database and update the `config/db.ts` file with your database connection details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5. **Start the server:**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```bash
+   yarn start
+   ```
+
+   The server should now be running on http://localhost:3000.
+
+## Directory Structure
+
+The project has a well-organized directory structure to separate concerns and improve maintainability:
+
+### config
+
+Contains configuration files for the application, such as `app.ts` for general application settings and `db.ts` for database configuration.
+
+### general
+
+- **controller:** Contains the base controller interface (`controller-interface.ts`) and the generic controller implementation (`controller.ts`).
+- **database:** Holds the database connection setup (`connection-database.ts`).
+- **http:** Includes the main application startup file (`start-application.ts`).
+- **repository:** Consists of the base repository interface (`repository-interface.ts`) and the generic repository implementation (`repository.ts`).
+- **utils:** Houses common types used throughout the application (`types.ts`).
+
+### middlewares
+
+Contains custom middleware functions, such as `authenticate-buyer.ts` and `authenticate-seller.ts`, which handle authentication for buyers and sellers, respectively.
+
+### products
+
+This directory represents the module for handling products.
+
+- **controllers:** Holds the product controller (`product-controller.ts`).
+- **model:** Defines the product model (`product.ts`).
+- **repositories:** Implements the product repository (`product-repository.ts`).
+- **routes.ts:** Defines the routes related to products.
+
+### users
+
+This directory represents the module for handling users.
+
+- **controllers:** Holds the user controller (`user-controller.ts`).
+- **model:** Defines the user model (`user.ts`).
+- **repositories:** Implements the user repository (`user-repository.ts`).
+- **routes.ts:** Defines the routes related to users.
+
+## API Endpoints
+
+- **POST /users:** Create a new user.
+- **GET /users:** Get a list of all users.
+  **PUT /users/:id:** Update a product (seller role required).
+- **DELETE /users/:id:** Delete a product (seller role required)
+- **POST /products:** Create a new product (seller role required).
+- **GET /products:** Get a list of all products.
+- **PUT /products/:id:** Update a product (send userId in header).
+- **DELETE /products/:id:** Delete a product (send userId in header).
+- **POST /deposit:** Deposit coins into the user's vending machine account.
+- **POST /buy:** Buy products with deposited money.
+- **PATCH /reset:** Reset the user's deposit.
+
